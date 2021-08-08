@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <header th:fragment="header(cliente, cadastrar, totalCarrinho)">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" th:href="@{'/'}">Calçados Caruaru</a>
+
+                    <form class="d-flex" th:if="${cliente}" method="get" th:action="@{/visualizarCarrinho}">
+                        <button class="btn btn-outline-dark" type="submit">
+                            Carrinho
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${totalCarrinho}"</span>
+                        </button>
+                    </form>
+
+                    <form class="d-flex" th:if="${cadastrar}" method="get" th:action="@{/cadastrar}" >
+                        <button class="btn btn-outline-dark" type="submit">
+                            Cadastrar Produtos
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+</html>

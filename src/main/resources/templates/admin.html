@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="fragments/head :: head"></div>
+
+    <body>
+        <div th:replace="fragments/header :: header(false, true, 0)"></div>
+
+        <div th:if="${#request.getParameter('mensagem') != null}" class="alert alert-success" role="alert" th:text="${#request.getParameter('mensagem')}"></div>
+
+        <main class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <h3 class="justify-content-center">Calçados no estoque:</h3>
+                <br/>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Imagem</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Tamanho</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Quantidade</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="calcado : ${calcados}">
+                            <td>Imagem</td>
+                            <td th:text="${calcado.getNome()}">-</td>
+                            <td th:text="${calcado.getMarca()}">-</td>
+                            <td th:text="${calcado.getTamanho()}">-</td>
+                            <td th:text="${calcado.getDescricao()}">-</td>
+                            <td th:text="${calcado.getQuantidade()}">-</td>
+                            <td th:text="${'R$' + calcado.getValor()}">-</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <form class="d-flex" method="get" th:action="@{'/editar/' + ${calcado.getId()}}" >
+                                        <button class="btn btn-outline-dark" type="submit" >
+                                            Editar
+                                        </button>
+                                    </form>
+                                    <form class="d-flex" method="get" th:action="@{'/deletar/' + ${calcado.getId()}}" >
+                                        <button class="btn btn-outline-danger" type="submit">
+                                            Deletar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+  <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <div th:replace="fragments/head :: head"></div>
+
+  <body>
+
+    <div th:replace="fragments/header :: header(false, true, 0)"></div>
+    <br>    <br>
+
+    <main class="container">
+      <h3 class="justify-content-center" th:if="${!edicao}">Cadastro de calçados</h3>
+      <h3 class="justify-content-center" th:if="${edicao}">Edição de calçados</h3>
+      <br>
+
+      <form method="post" th:object="${calcado}" th:action="@{/salvar}" enctype="multipart/form-data">
+
+        <input class="invisible" id="id" name="id" th:field="*{id}" placeholder="Id do produto">
+
+        <div class="form-floating">
+          <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}" placeholder="Nome do produto">
+          <label for="nome">Nome</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <input type="text" class="form-control" id="marca" name="marca" th:field="*{marca}" placeholder="Marca da produto">
+          <label for="marca">Marca</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <input type="number" class="form-control" id="tamanho" name="tamanho" th:field="*{tamanho}" placeholder="Tamanho do produto">
+          <label for="tamanho">Tamanho</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <input type="number" class="form-control" step="0.01" id="valor" name="valor" th:field="*{valor}" placeholder="Valor do produto">
+          <label for="valor">Valor</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <input type="number" class="form-control" id="quantidade" name="quantidade" th:field="*{quantidade}" placeholder="Quantidade do produto">
+          <label for="quantidade">Quantidade</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}" placeholder="Descrição da produto">
+          <label for="descricao">Descrição</label>
+        </div>
+        <br>
+
+        <div class="form-floating">
+          <label for="file">Escolha uma imagem</label>
+          <input  type="file" name="file" class="form-control-file" id="file" accept="image/png">
+        </div>
+        <br>
+
+        <button type="submit" class="btn btn-lg btn-dark" th:if="${!edicao}">Cadastrar</button>
+        <button type="submit" class="btn btn-lg btn-dark" th:if="${edicao}">Editar</button>
+      </form>
+    </main>
+  </body>
+</html>
