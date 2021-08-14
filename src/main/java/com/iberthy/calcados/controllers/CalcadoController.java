@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,18 +34,21 @@ public class CalcadoController {
     public List<Calcado> ManipulaCarrinho(HttpServletRequest request, HttpServletResponse response, Long id, boolean remove){
 
         HttpSession session = request.getSession();
-        var carrinho = (List<Calcado>) session.getAttribute("carrinho");
+        List<Calcado> carrinho = (List<Calcado>) session.getAttribute("carrinho");
 
         if (carrinho == null) { carrinho = new ArrayList<>(); }
 
         if(id != null && remove){
             var calcado = this.service.buscarPorId(id);
+            System.out.println(calcado);
             carrinho.remove(calcado);
         }else if(id != null){
             var calcado = this.service.buscarPorId(id);
+            System.out.println(calcado);
             carrinho.add(calcado);
         }
 
+        System.out.println(carrinho);
         session.setAttribute("carrinho", carrinho);
 
         return carrinho;
@@ -140,7 +142,7 @@ public class CalcadoController {
 
 
     @RequestMapping(value = "/adicionarAoCarrinho/{id}", method = RequestMethod.GET)
-    public String adicionarAoCarrinho(@PathVariable(name = "id") Long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String adicionarAoCarrinho(@PathVariable(name = "id") Long id, HttpServletRequest request, HttpServletResponse response){
         ManipulaCarrinho(request, response, id, false);
         return "redirect:/";
     }
@@ -149,7 +151,7 @@ public class CalcadoController {
     public String removerDoCarrinho(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request, HttpServletResponse response){
         var carrinho = ManipulaCarrinho(request, response, id, true);
         model.addAttribute("carrinho", carrinho);
-        return "carrinho";
+        return "carrodecompras";
     }
 
     @RequestMapping(value = "/visualizarCarrinho", method = RequestMethod.GET)
@@ -161,11 +163,11 @@ public class CalcadoController {
         }
 
         model.addAttribute("carrinho", carrinho);
-        return "carrinho";
+        return "carrodecompras";
     }
 
     @RequestMapping(value = "/finalizarCompra", method = RequestMethod.GET)
-    public String finalizarCompra(HttpServletRequest request, HttpServletResponse response){
+    public String finalizarCompra(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();
         return "redirect:/";

@@ -2,6 +2,7 @@ package com.iberthy.calcados.service;
 
 import com.iberthy.calcados.models.Calcado;
 import com.iberthy.calcados.repositorys.CalcadoRepository;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ public class CalcadoService {
 
     public void salvar(Calcado calcado){
         this.repository.save(calcado);
+        System.out.println(calcado);
     }
 
     public Calcado buscarPorId(Long id){
         var calcado = this.repository.getById(id);
+        System.out.println(calcado);
         return calcado;
     }
 
@@ -30,6 +33,7 @@ public class CalcadoService {
         var calcado = this.repository.getById(id);
         calcado.setDelete(new Date());
         this.repository.save(calcado);
+        System.out.println(calcado);
     }
 
     public List<Calcado> listarTodosNaoDeletados(){
