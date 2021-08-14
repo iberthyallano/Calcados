@@ -29,7 +29,6 @@
                         <td th:text="${calcado.getMarca()}">-</td>
                         <td th:text="${calcado.getTamanho()}">-</td>
                         <td th:text="${calcado.getDescricao()}">-</td>
-                        <td th:text="${calcado.getQuantidade()}">-</td>
                         <td th:text="${'R$' + calcado.getValor()}">-</td>
                         <td>
                             <form class="d-flex" method="get" th:action="@{'/removerDoCarrinho/' + ${calcado.getId()}}" >
@@ -41,8 +40,8 @@
                     </tr>
                     </tbody>
                 </table>
+                <a type="submit" class="btn btn-lg btn-dark" th:href="@{'/finalizarCompra'}" style="margin-top: 60px">Finalizar Compra</a>
             </div>
-            <a type="submit" class="btn btn-lg btn-dark" th:href="@{'/finalizarCompra'}">Finalizar Compra</a>
         </main>
         <div th:replace="fragments/footer :: footer"></div>
     </body>

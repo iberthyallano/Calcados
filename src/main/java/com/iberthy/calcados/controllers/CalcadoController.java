@@ -3,13 +3,11 @@ package com.iberthy.calcados.controllers;
 import com.iberthy.calcados.mensage.Mensagem;
 import com.iberthy.calcados.models.Calcado;
 import com.iberthy.calcados.service.CalcadoService;
-import com.iberthy.calcados.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,32 +22,29 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class CalcadoController {
 
     CalcadoService service;
-    FileStorageService fileStorageService;
-
-    @Autowired
-    public void setFileStorageService(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
-    }
 
     @Autowired
     public void setService(CalcadoService service) { this.service = service; }
 
-    public ArrayList<Calcado> ManipulaCarrinho(HttpServletRequest request, HttpServletResponse response, Long id, boolean remove){
+    public List<Calcado> ManipulaCarrinho(HttpServletRequest request, HttpServletResponse response, Long id, boolean remove){
 
         HttpSession session = request.getSession();
-        ArrayList<Calcado> carrinho = (ArrayList<Calcado>) session.getAttribute("carrinho");
+        var carrinho = (List<Calcado>) session.getAttribute("carrinho");
 
         if (carrinho == null) { carrinho = new ArrayList<>(); }
 
         if(id != null && remove){
-            carrinho.remove(this.service.buscarPorId(id));
+            var calcado = this.service.buscarPorId(id);
+            carrinho.remove(calcado);
         }else if(id != null){
-            carrinho.add(this.service.buscarPorId(id));
+            var calcado = this.service.buscarPorId(id);
+            carrinho.add(calcado);
         }
 
         session.setAttribute("carrinho", carrinho);
@@ -92,15 +87,19 @@ public class CalcadoController {
     }
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
-    public String salvarProduto(@ModelAttribute @Valid Calcado calcado, @RequestParam("file") MultipartFile file, Errors errors, RedirectAttributes redirectAttributes){
+    public String salvarProduto(Model model, @ModelAttribute @Valid Calcado calcado, Errors errors, RedirectAttributes redirectAttributes){
         if (errors.hasErrors()){
-            return "redirect:/cadastrar";
+            //Mandar os erros para o formulário
+            model.addAttribute("calcado",calcado);
+            model.addAttribute("edicao", false);
+            return "cadastro";
         }else{
-            calcado.setImagemUri(file.getOriginalFilename());
-            this.service.salvar(calcado);
-            fileStorageService.save(file);
-
-            redirectAttributes.addAttribute("mensagem", Mensagem.SUCESSO_AO_REALIZAR_UMA_ACAO);
+            try{
+                this.service.salvar(calcado);
+                redirectAttributes.addAttribute("mensagem", Mensagem.SUCESSO_AO_REALIZAR_UMA_ACAO);
+            }catch (Exception exeption){
+                redirectAttributes.addAttribute("mensagem", Mensagem.ERRO_AO_REALIZAR_UMA_ACAO);
+            }
             return "redirect:/admin";
         }
     }
@@ -128,8 +127,14 @@ public class CalcadoController {
     }
 
     @RequestMapping(value = "/deletar/{id}", method = RequestMethod.GET)
-    public String deletarProduto(@PathVariable(name = "id") Long id){
-        this.service.deletar(id);
+    public String deletarProduto(@PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes){
+        try{
+            this.service.deletar(id);
+            redirectAttributes.addAttribute("mensagem", Mensagem.SUCESSO_AO_REALIZAR_UMA_ACAO);
+        }catch (Exception exeption){
+            redirectAttributes.addAttribute("mensagem", Mensagem.ERRO_AO_REALIZAR_UMA_ACAO);
+        }
+
         return "redirect:/admin";
     }
 
@@ -140,7 +145,7 @@ public class CalcadoController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/removerDoCarrinho", method = RequestMethod.GET)
+    @RequestMapping(value = "/removerDoCarrinho/{id}", method = RequestMethod.GET)
     public String removerDoCarrinho(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request, HttpServletResponse response){
         var carrinho = ManipulaCarrinho(request, response, id, true);
         model.addAttribute("carrinho", carrinho);

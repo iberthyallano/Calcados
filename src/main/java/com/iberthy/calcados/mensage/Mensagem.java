@@ -6,4 +6,5 @@ public final class Mensagem {
     public static final String ERRO_CAMPO_VAZIO= "O dado não pode ser vazio!";
 
     public static final String SUCESSO_AO_REALIZAR_UMA_ACAO = "Ação realizada com sucesso!";
+    public static final String ERRO_AO_REALIZAR_UMA_ACAO = "Não foi possível ralizar essa ação!";
 }

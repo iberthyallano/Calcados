@@ -22,7 +22,8 @@ public class CalcadoService {
     }
 
     public Calcado buscarPorId(Long id){
-        return this.repository.getById(id);
+        var calcado = this.repository.getById(id);
+        return calcado;
     }
 
     public void deletar(Long id){

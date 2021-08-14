@@ -20,42 +20,42 @@
         <div class="form-floating">
           <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}" placeholder="Nome do produto">
           <label for="nome">Nome</label>
+          <small id="nomeError" class="form-text text-muted danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">-</small>
         </div>
         <br>
 
         <div class="form-floating">
           <input type="text" class="form-control" id="marca" name="marca" th:field="*{marca}" placeholder="Marca da produto">
           <label for="marca">Marca</label>
+          <small id="marcaError" class="form-text text-muted danger" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}">-</small>
         </div>
         <br>
 
         <div class="form-floating">
           <input type="number" class="form-control" id="tamanho" name="tamanho" th:field="*{tamanho}" placeholder="Tamanho do produto">
           <label for="tamanho">Tamanho</label>
+          <small id="tamanhoError" class="form-text text-muted danger" th:if="${#fields.hasErrors('tamanho')}" th:errors="*{tamanho}">-</small>
         </div>
         <br>
 
         <div class="form-floating">
           <input type="number" class="form-control" step="0.01" id="valor" name="valor" th:field="*{valor}" placeholder="Valor do produto">
           <label for="valor">Valor</label>
+          <small id="valorError" class="form-text text-muted danger" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}">-</small>
         </div>
         <br>
 
         <div class="form-floating">
           <input type="number" class="form-control" id="quantidade" name="quantidade" th:field="*{quantidade}" placeholder="Quantidade do produto">
           <label for="quantidade">Quantidade</label>
+          <small id="quantidadeError" class="form-text text-muted danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}">-</small>
         </div>
         <br>
 
         <div class="form-floating">
           <input type="text" class="form-control" id="descricao" name="descricao" th:field="*{descricao}" placeholder="Descrição da produto">
           <label for="descricao">Descrição</label>
-        </div>
-        <br>
-
-        <div class="form-floating">
-          <label for="file">Escolha uma imagem</label>
-          <input  type="file" name="file" class="form-control-file" id="file" accept="image/png">
+          <small id="descricaoError" class="form-text text-muted danger" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">-</small>
         </div>
         <br>
 

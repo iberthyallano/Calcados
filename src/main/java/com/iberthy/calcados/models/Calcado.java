@@ -51,8 +51,4 @@ public class Calcado {
 
     @Column
     Date delete;
-
-    @NotBlank(message = Mensagem.ERRO_CAMPO_VAZIO)
-    @Column
-    String imagemUri;
 }

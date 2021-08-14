@@ -6,7 +6,17 @@
     <body>
         <div th:replace="fragments/header :: header(false, true, 0)"></div>
 
-        <div th:if="${#request.getParameter('mensagem') != null}" class="alert alert-success" role="alert" th:text="${#request.getParameter('mensagem')}"></div>
+        <div th:if="${#request.getParameter('mensagem') != null}" class="alert alert-dark alert-dismissible container" role="alert" style="margin-top: 100px; width: 400px">
+            <div class="d-grid gap-2 d-md-flex justify-content-between">
+                <div class="align-self-center" th:text="${#request.getParameter('mensagem')}"></div>
+
+                <form class="d-flex align-self-center" method="get" th:action="@{/admin}" >
+                    <button class="btn btn-danger align-self-center" type="submit">
+                        <span class="d-flex align-self-center">&times;</span>
+                    </button>
+                </form>
+            </div>
+        </div>
 
         <main class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
